@@ -4,6 +4,15 @@ require 'forwardable'
 require_relative 'const'
 
 module Tiger
+  # Wraps a raw TCP socket into a Rack-aware client. It holds the Rack
+  # environment hash and delegates I/O operations to the underlying socket.
+  # Use this class to turn an accepted TCP connection into something the
+  # request pipeline can work with.
+  #
+  #   client = Tiger::Client.new(tcp_server.accept)
+  #   client.gets   # read a line from the socket
+  #   client.env    # access the Rack environment hash
+  #   client.close  # close the connection
   class Client
     extend Forwardable
     include Const
@@ -24,6 +33,9 @@ module Tiger
 
     def_delegators :tcp_client, :gets, :print, :close
 
+    # Wraps +tcp_client+ (a TCPSocket returned by TCPServer#accept) and
+    # initializes a default Rack environment hash that will be populated
+    # later by the Request module with per-request values.
     def initialize(tcp_client)
       @tcp_client = tcp_client
       @env = DEFAULT_ENV

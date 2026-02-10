@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module Tiger
+  # Centralizes CGI and Rack environment variable names as constants.
+  # Include this module to avoid duplicating string literals across the
+  # codebase. This prevents typos and makes renaming straightforward.
   module Const
     # CGI Variables
     SCRIPT_NAME     = 'SCRIPT_NAME'

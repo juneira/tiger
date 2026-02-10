@@ -3,10 +3,18 @@
 require_relative 'const'
 
 module Tiger
-  # This module is included by Server
+  # Parses incoming HTTP requests and builds the Rack environment.
+  # Include this module in any class that needs to translate raw HTTP data
+  # into a Rack-compatible +env+ hash and invoke a Rack application.
+  # The including class must provide +app+ (a Rack app) and +@tcp_server+.
   module Request
     include Const
 
+    # Reads the first line of the HTTP request from +client+, extracts the
+    # method and path, populates the Rack environment, and calls the Rack
+    # app. Returns the standard Rack response triplet: [status, headers, body].
+    #
+    #   status, headers, body = receive_request(client)
     def receive_request(client)
       request = client.gets
 
