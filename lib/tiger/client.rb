@@ -38,7 +38,7 @@ module Tiger
     # later by the Request module with per-request values.
     def initialize(tcp_client)
       @tcp_client = tcp_client
-      @env = DEFAULT_ENV
+      @env = DEFAULT_ENV.dup
     end
   end
 end

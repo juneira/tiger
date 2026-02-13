@@ -44,10 +44,12 @@ module Tiger
     attr_reader :app, :tcp_server
 
     def send_response(client, status, headers, body)
-      client.print "HTTP/1.1 #{status}"
+      client.print "HTTP/1.1 #{status}\r\n"
       headers.each { |k, v| client.print "#{k}: #{v}\r\n" }
       client.print "\r\n"
       body.each { |part| client.print part }
+    ensure
+      body.close if body.respond_to?(:close)
     end
   end
 end
