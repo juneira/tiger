@@ -11,7 +11,7 @@ module Rackup
         # Entry point called by Rackup. Receives the Rack +app+ built from
         # config.ru and any CLI options, then starts the Tiger server.
         def run(app, **options)
-          server = ::Tiger::Server.new(app)
+          server = ::Tiger::Server.new(app, port: options[:Port] || options[:port] || 8080)
 
           server.run
         end
